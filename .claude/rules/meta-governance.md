@@ -17,7 +17,7 @@ Understanding this distinction is critical for deciding what to commit, what to 
 ### Identity 2: Public Template
 - Others fork this repo to bootstrap their own academic workflows
 - They use different domains (biology, physics, CS, not just economics)
-- They use different tools (pure LaTeX, pure Python, Python, Jupyter)
+- They use different tools (pure LaTeX, pure Python, Jupyter)
 - They need generic patterns, not our specific decisions
 
 ---
