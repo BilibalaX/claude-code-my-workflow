@@ -10,7 +10,7 @@ Usage:
     python scripts/quality_score.py Quarto/Lecture6_Topic.qmd --summary
     python scripts/quality_score.py Quarto/*.qmd
     python scripts/quality_score.py Slides/Lecture01_Topic.tex
-    python scripts/quality_score.py scripts/R/Lecture06_simulations.R
+    python scripts/quality_score.py scripts/python/Lecture06_simulations.py
 """
 
 import sys
@@ -47,20 +47,20 @@ QUARTO_RUBRIC = {
     }
 }
 
-R_SCRIPT_RUBRIC = {
+PYTHON_SCRIPT_RUBRIC = {
     'critical': {
         'syntax_error': {'points': 100, 'auto_fail': True},
         'hardcoded_path': {'points': 20},
         'missing_library': {'points': 10},
     },
     'major': {
-        'missing_set_seed': {'points': 10},
+        'missing_random_seed': {'points': 10},
         'missing_figure': {'points': 5},
-        'missing_rds': {'points': 5},
+        'missing_serialized_artifact': {'points': 5},
     },
     'minor': {
         'style_violation': {'points': 1},
-        'missing_roxygen': {'points': 1},
+        'missing_docstring': {'points': 1},
     }
 }
 
@@ -214,11 +214,11 @@ class IssueDetector:
         return actual_count, (actual_count >= expected)
 
     @staticmethod
-    def check_r_syntax(filepath: Path) -> Tuple[bool, str]:
-        """Check R script for syntax errors."""
+    def check_python_syntax(filepath: Path) -> Tuple[bool, str]:
+        """Check Python script for syntax errors."""
         try:
             result = subprocess.run(
-                ['Rscript', '-e', f'parse("{filepath}")'],
+                ['python', '-m', 'py_compile', str(filepath)],
                 capture_output=True,
                 text=True,
                 timeout=10
@@ -229,11 +229,11 @@ class IssueDetector:
         except subprocess.TimeoutExpired:
             return False, "Syntax check timeout"
         except FileNotFoundError:
-            return False, "Rscript not installed"
+            return False, "python not installed"
 
     @staticmethod
     def check_hardcoded_paths(content: str) -> List[int]:
-        """Detect absolute paths in R scripts."""
+        """Detect absolute paths in Python scripts."""
         issues = []
         lines = content.split('\n')
 
@@ -446,17 +446,17 @@ class QualityScorer:
         self.score = max(0, self.score)
         return self._generate_report()
 
-    def score_r_script(self) -> Dict:
-        """Score R script quality."""
+    def score_python_script(self) -> Dict:
+        """Score Python script quality."""
         content = self.filepath.read_text(encoding='utf-8')
 
         # Check syntax
-        is_valid, error = IssueDetector.check_r_syntax(self.filepath)
+        is_valid, error = IssueDetector.check_python_syntax(self.filepath)
         if not is_valid:
             self.auto_fail = True
             self.issues['critical'].append({
                 'type': 'syntax_error',
-                'description': 'R syntax error',
+                'description': 'Python syntax error',
                 'details': error[:200],
                 'points': 100
             })
@@ -469,19 +469,19 @@ class QualityScorer:
             self.issues['critical'].append({
                 'type': 'hardcoded_path',
                 'description': f'Hardcoded absolute path at line {line}',
-                'details': 'Use relative paths or here::here()',
+                'details': 'Use relative paths or pathlib.Path',
                 'points': 20
             })
             self.score -= 20
 
-        # Check for set.seed() if randomness detected
-        has_random = any(fn in content for fn in ['rnorm', 'runif', 'sample', 'rbinom', 'rnbinom'])
-        has_seed = 'set.seed' in content
+        # Check for Python random seed usage if randomness detected
+        has_random = any(fn in content for fn in ['np.random.', 'random.', 'torch.rand', 'jax.random'])
+        has_seed = any(seed in content for seed in ['np.random.seed', 'random.seed'])
         if has_random and not has_seed:
             self.issues['major'].append({
-                'type': 'missing_set_seed',
-                'description': 'Missing set.seed() for reproducibility',
-                'details': 'Add set.seed(YYYYMMDD) after library() calls',
+                'type': 'missing_random_seed',
+                'description': 'Missing explicit random seed for reproducibility',
+                'details': 'Add np.random.seed(YYYYMMDD) or random.seed(YYYYMMDD) near imports',
                 'points': 10
             })
             self.score -= 10
@@ -685,8 +685,8 @@ Examples:
   # Score a Beamer/LaTeX file
   python scripts/quality_score.py Slides/Lecture01_Topic.tex
 
-  # Score an R script
-  python scripts/quality_score.py scripts/R/Lecture06_simulations.R
+  # Score a Python script
+  python scripts/quality_score.py scripts/python/Lecture06_simulations.py
 
   # Summary only (no detailed issues)
   python scripts/quality_score.py Quarto/Lecture6.qmd --summary
@@ -727,8 +727,8 @@ Exit Codes:
 
             if filepath.suffix == '.qmd':
                 report = scorer.score_quarto()
-            elif filepath.suffix == '.R':
-                report = scorer.score_r_script()
+            elif filepath.suffix == '.py':
+                report = scorer.score_python_script()
             elif filepath.suffix == '.tex':
                 report = scorer.score_beamer()
             else:

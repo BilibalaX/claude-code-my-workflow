@@ -45,7 +45,7 @@ Create a beautiful, pedagogically excellent Beamer lecture deck.
 
 ### Phase 2: Structure Proposal
 - Propose outline (5-Act or 3-Part template)
-- List TikZ diagrams and R figures needed
+- List TikZ diagrams and Python figures needed
 - List new notation to introduce
 - **GATE: User approves before Phase 3**
 
@@ -55,9 +55,9 @@ Create a beautiful, pedagogically excellent Beamer lecture deck.
 - Quality checks during drafting
 
 ### Phase 4: Figures & Code
-- R scripts following conventions
+- Python scripts following conventions
 - TikZ diagrams in Beamer source (single source of truth)
-- Save RDS for future Quarto integration
+- Save Parquet/Pickle for future Quarto integration
 
 ### Phase 5: Polish & Compile
 - Full 3-pass compilation

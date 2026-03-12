@@ -10,7 +10,7 @@ Create a skill when you find yourself:
 - Repeatedly explaining the same 3+ step workflow to Claude
 - Needing domain-specific quality checks (citation style, notation consistency, lab protocols)
 - Enforcing field-specific output formats (thesis structure, journal templates, lab notebooks)
-- Coordinating multi-tool workflows (Figma → R → LaTeX, data → analysis → manuscript)
+- Coordinating multi-tool workflows (Figma → Python → LaTeX, data → analysis → manuscript)
 
 **Don't create a skill for:**
 - One-time tasks
@@ -106,7 +106,7 @@ description: Validates thesis chapter structure against institutional requiremen
 
 **Econometric Specification Review (Economics):**
 ```yaml
-description: Reviews econometric specifications for common errors. Use when user shares regression code in R or Stata, or asks to "check model spec", "review estimation". Validates: standard error clustering, fixed effects structure, missing covariates, and replication commands.
+description: Reviews econometric specifications for common errors. Use when user shares regression code in Python or Stata, or asks to "check model spec", "review estimation". Validates: standard error clustering, fixed effects structure, missing covariates, and replication commands.
 ```
 
 ### Bad Examples (Too Generic)
@@ -187,20 +187,20 @@ Step 4: **Report findings**
 ```markdown
 ---
 name: format-regression-tables
-description: Converts R regression outputs to publication-ready LaTeX tables. Use when user runs regressions and says "make a table", "format results", or "export to LaTeX". Handles lm, glm, felm, and fixest objects. Applies field-specific conventions (standard errors in parentheses, stars for significance).
+description: Converts Python regression outputs to publication-ready LaTeX tables. Use when user runs regressions and says "make a table", "format results", or "export to LaTeX". Handles lm, glm, felm, and fixest objects. Applies field-specific conventions (standard errors in parentheses, stars for significance).
 argument-hint: "[model object name]"
 allowed-tools: ["Read", "Write", "Bash"]
 ---
 
 # Format Regression Tables
 
-Converts R regression objects into publication-ready LaTeX tables with proper formatting.
+Converts Python regression objects into publication-ready LaTeX tables with proper formatting.
 
 ## Instructions
 
 Step 1: **Identify model objects**
-   - User provides R object names (e.g., `model1`, `model2`)
-   - Read corresponding .rds files from output/
+   - User provides Python object names (e.g., `model1`, `model2`)
+   - Read corresponding .parquet files from output/
 
 Step 2: **Extract coefficients and statistics**
    - Coefficient estimates
@@ -252,8 +252,8 @@ Step 4: **Save and verify**
 ## Troubleshooting
 
 **Error:** Model object not found
-**Cause:** .rds file not in expected location
-**Solution:** Check output/ directory, verify saveRDS() was called
+**Cause:** .parquet file not in expected location
+**Solution:** Check output/ directory, verify `to_parquet()`/`to_pickle()` was called
 
 **Error:** Standard errors missing
 **Cause:** Model didn't specify clustering/robust SEs
@@ -349,9 +349,9 @@ Step 4: **Generate report**
 When adapting this template to your domain:
 
 - [ ] Replace example trigger phrases with your field's terminology
-- [ ] Add domain-specific file types (`.R`, `.py`, `.ipynb`, `.tex`, `.stan`)
+- [ ] Add domain-specific file types (`.py`, `.py`, `.ipynb`, `.tex`, `.stan`)
 - [ ] Include field conventions (notation, formatting, citation styles)
-- [ ] Reference standard tools (`ggplot2`, `pandas`, `TikZ`, `Stata`)
+- [ ] Reference standard tools (`matplotlib/seaborn`, `pandas`, `TikZ`, `Stata`)
 - [ ] Add common error messages from your toolchain
 - [ ] Include institutional requirements (thesis formats, journal templates)
 
@@ -365,8 +365,8 @@ When adapting this template to your domain:
 | `Write` | Creating new files (reports, tables, outputs) |
 | `Edit` | Modifying existing files in place |
 | `Grep` | Searching file contents (citations, function names) |
-| `Glob` | Finding files by pattern (*.R, *.tex, *.csv) |
-| `Bash` | Running commands (R scripts, LaTeX compilation, git) |
+| `Glob` | Finding files by pattern (*.py, *.tex, *.csv) |
+| `Bash` | Running commands (Python scripts, LaTeX compilation, git) |
 | `Task` | Launching subagents (for complex multi-step workflows) |
 
 **Security note:** Only grant `Bash` access if your skill needs to execute code or compile documents. For read-only validation skills, omit it.
@@ -379,4 +379,4 @@ When adapting this template to your domain:
 - **Purpose:** Starter for domain-specific skills
 - **Usage:** Copy to `.claude/skills/[name]/SKILL.md`, customize for your field
 
-For existing skills examples, see `.claude/skills/` directory (22 skills for LaTeX, R, Quarto, and research workflows).
+For existing skills examples, see `.claude/skills/` directory (22 skills for LaTeX, Python, Quarto, and research workflows).
