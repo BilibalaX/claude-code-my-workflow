@@ -2,7 +2,7 @@
 paths:
   - "Slides/**/*.tex"
   - "Quarto/**/*.qmd"
-  - "scripts/**/*.R"
+  - "scripts/**/*.py"
 ---
 
 # Course Knowledge Base: [YOUR COURSE NAME]
@@ -47,7 +47,7 @@ paths:
 |-------------|---------------|-----------|
 | | | |
 
-## R Code Pitfalls
+## Python Code Pitfalls
 
 | Bug | Impact | Fix |
 |-----|--------|-----|

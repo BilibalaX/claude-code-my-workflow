@@ -17,7 +17,7 @@ Understanding this distinction is critical for deciding what to commit, what to 
 ### Identity 2: Public Template
 - Others fork this repo to bootstrap their own academic workflows
 - They use different domains (biology, physics, CS, not just economics)
-- They use different tools (pure LaTeX, pure R, Python, Jupyter)
+- They use different tools (pure LaTeX, pure Python, Python, Jupyter)
 - They need generic patterns, not our specific decisions
 
 ---
@@ -192,7 +192,7 @@ The template CLAUDE.md has `[YOUR PROJECT NAME]`, `[YOUR INSTITUTION]` — this 
 ### Documentation Can Reference Original Use Case
 
 Pedagogically valuable to show real-world example:
-> "Case Study: 6 lectures, 800+ slides, Beamer + Quarto + R replication"
+> "Case Study: 6 lectures, 800+ slides, Beamer + Quarto + Python replication"
 
 This shows what's POSSIBLE, not what's REQUIRED.
 

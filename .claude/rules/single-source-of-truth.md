@@ -16,7 +16,7 @@ Beamer .tex (SOURCE OF TRUTH)
   ├── extract_tikz.tex → PDF → SVGs (derived)
   ├── Quarto .qmd → HTML (derived)
   ├── Bibliography_base.bib (shared)
-  └── Figures/LectureN/*.rds → plotly charts (data source)
+  └── Figures/LectureN/*.parquet → plotly charts (data source)
 
 NEVER edit derived artifacts independently.
 ALWAYS propagate changes from source → derived.

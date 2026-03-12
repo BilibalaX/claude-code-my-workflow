@@ -20,7 +20,7 @@ Restructure the entire Claude Code workflow configuration to follow best practic
 | `quality-gates.md` | Trimmed 145 → 67 lines | Moved merge template to templates/ |
 | `knowledge-base-template.md` | Trimmed 222 → 56 lines | Skeleton tables only |
 | `no-pause-beamer.md` | Trimmed 29 → 10 lines | Essentials only |
-| `r-code-conventions.md` | Trimmed 155 → 105 lines | Cut script structure, console policy |
+| `python-code-conventions.md` | Trimmed 155 → 105 lines | Cut script structure, console policy |
 | `replication-protocol.md` | Trimmed 190 → 103 lines | Cut verbose explanations |
 | `pdf-processing.md` | Trimmed 120 → 61 lines | Cut duplicate quick reference |
 | `proofreading-protocol.md` | Trimmed 105 → 47 lines | Cut agent prompt template |
@@ -37,7 +37,7 @@ Restructure the entire Claude Code workflow configuration to follow best practic
 |----------|------------------------|-----------|
 | 3 always-on rules only | Could have 0 always-on (all path-scoped) | Plan-first, orchestrator, and logging apply to ALL tasks |
 | Path-scope exploration rules | Keep always-on | Explorations are situational; no need to load for slide work |
-| Extract research orchestrator | Keep in orchestrator-protocol | Different audience (R scripts vs slides); reduces always-on size |
+| Extract research orchestrator | Keep in orchestrator-protocol | Different audience (Python scripts vs slides); reduces always-on size |
 | Templates in templates/ | Keep in rules | Templates are reference formats, not instructions; shouldn't auto-load |
 
 ## Thorough Review Findings
@@ -75,12 +75,12 @@ Launched 4 verification agents in parallel to cross-check every claim in CLAUDE.
 **CLAUDE.md:** All 19 skills, 10 agents, folder structure, quality_score.py, sync_to_docs.sh — all verified accurate. No issues.
 
 **README.md:** 6 rules had simplified/inaccurate "Triggers On" values:
-- `verification-protocol`: said `.R` but actual is `docs/` — fixed
+- `verification-protocol`: said `.py` but actual is `docs/` — fixed
 - `single-source-of-truth`: omitted `Figures/` — fixed
 - `pdf-processing`: said `supporting_papers/` but actual is `master_supporting_docs/` — fixed
 - `proofreading-protocol`: omitted `quality_reports/` — fixed
-- `replication-protocol`: said `Figures/` but actual is only `Figures/*.R` — fixed
-- `orchestrator-research`: omitted `Figures/*.R` (acceptable simplification, kept as-is)
+- `replication-protocol`: said `Figures/` but actual is only `Figures/*.py` — fixed
+- `orchestrator-research`: omitted `Figures/*.py` (acceptable simplification, kept as-is)
 
 **Guide:** Same 3 trigger path issues as README (verification-protocol, pdf-processing, proofreading-protocol) — all fixed in appendix table and inline code block.
 

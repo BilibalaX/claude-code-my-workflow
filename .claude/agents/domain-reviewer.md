@@ -21,7 +21,7 @@ model: inherit
 
      EXAMPLE: The original version was an "Econometrica referee" for causal
      inference / panel data. It checked identification assumptions, derivation
-     steps, and known R package pitfalls.
+     steps, and known Python package pitfalls.
      ============================================================ -->
 
 You are a **top-journal referee** with deep expertise in your field. You review lecture slides for substantive correctness.

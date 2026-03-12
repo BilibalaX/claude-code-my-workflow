@@ -120,7 +120,7 @@ After creating the skill, report:
 
 ## Example: Creating a Skill
 
-User discovers that a specific R package silently drops observations:
+User discovers that a specific Python package silently drops observations:
 
 ```markdown
 ---
@@ -141,7 +141,7 @@ which can produce unexpected results when comparing to other packages.
 
 ## Context / Trigger Conditions
 - Sample size in fixest is smaller than expected
-- Results differ from Stata or other R packages
+- Results differ from Stata or other Python packages
 - Model has covariates with potential missing values
 
 ## Solution
