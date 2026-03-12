@@ -33,7 +33,9 @@
 ├── Slides/                      # Beamer .tex files
 ├── Quarto/                      # RevealJS .qmd files + theme
 ├── docs/                        # GitHub Pages (auto-generated)
+├── data/                        # raw/interim/processed datasets (recommended)
 ├── scripts/                     # Utility scripts + Python code
+├── output/                      # tables/figures/models/logs (recommended)
 ├── quality_reports/             # Plans, session logs, merge reports
 ├── explorations/                # Research sandbox (see rules)
 ├── templates/                   # Session log, quality report templates
@@ -57,6 +59,9 @@ TEXINPUTS=../Preambles:$TEXINPUTS xelatex -interaction=nonstopmode file.tex
 # Quality score
 python scripts/quality_score.py Quarto/file.qmd
 ```
+
+# Recommended data pipeline locations
+mkdir -p data/{raw,interim,processed} output/{tables,figures,models,logs} scripts/python
 
 ---
 

@@ -101,6 +101,43 @@ It covers:
 | Research proposals | Structured drafting with adversarial critique |
 
 ---
+## Python Economics Project Structure (Recommended)
+
+If you use this template for economics analysis, use this default layout so data lineage is explicit and reproducible:
+
+```
+[project-root]/
+├── data/
+│   ├── raw/                 # Immutable source data (never edit in place)
+│   ├── interim/             # Cleaned/merged/intermediate datasets
+│   └── processed/           # Final analysis-ready datasets
+├── scripts/
+│   ├── python/              # Analysis code (.py)
+│   └── *.py                 # Utility scripts (quality/deploy/etc.)
+├── output/
+│   ├── tables/              # Regression tables, summary tables
+│   ├── figures/             # Plots for papers/slides
+│   ├── models/              # Serialized model objects
+│   └── logs/                # Run logs and diagnostics
+├── quality_reports/         # Specs, plans, session logs, merge reports
+└── docs/                    # Publishable artifacts (GitHub Pages)
+```
+
+**Where things should go:**
+- **Raw data:** `data/raw/` (read-only by convention).
+- **Intermediate data:** `data/interim/` (temporary but versioned when important).
+- **Code:** `scripts/python/` for analysis scripts; keep one script per task/module.
+- **Output:** `output/tables/`, `output/figures/`, `output/models/`, `output/logs/`.
+
+**How to think about workflow:**
+1. Ingest raw data (`data/raw`)
+2. Build intermediate artifacts (`data/interim`)
+3. Produce analysis-ready data (`data/processed`)
+4. Run models from `scripts/python`
+5. Write results to `output/*`
+6. Publish presentation artifacts to `docs/`
+
+---
 
 ## What's Included
 
