@@ -2,7 +2,7 @@
 """
 Verification Reminder Hook
 
-Non-blocking reminder that fires on Write/Edit to academic files (.tex, .qmd, .R)
+Non-blocking reminder that fires on Write/Edit to academic files (.tex, .qmd, .py)
 to remind about compiling/rendering before marking a task as done.
 
 Hook Event: PostToolUse (matcher: "Write|Edit")
@@ -32,7 +32,7 @@ NC = "\033[0m"  # No color
 VERIFY_EXTENSIONS = {
     ".tex": "compile with /compile-latex",
     ".qmd": "render with quarto render",
-    ".R": "run to verify output"
+    ".py": "run to verify output"
 }
 
 # Files to skip

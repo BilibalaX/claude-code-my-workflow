@@ -22,19 +22,19 @@ Scan Beamer for all custom environments. Verify CSS equivalents exist in your th
 ### 0B. TikZ Freshness Verification
 Run `/extract-tikz` to verify SVGs match current Beamer source.
 
-### 0C. RDS Data Inventory
-List all RDS files needed for interactive charts.
+### 0C. Parquet/Pickle Data Inventory
+List all Parquet/Pickle files needed for interactive charts.
 
 ### 0D. Citation Key Mapping
 Extract all citations from Beamer, map to bibliography keys.
 
 ## Phase 1: Pre-Translation Preparation
 - Read complete Beamer source, count frames
-- Inventory figures (TikZ → SVG, R plots → plotly, other → SVG)
+- Inventory figures (TikZ → SVG, Python plots → plotly, other → SVG)
 
 ## Phase 2: Create QMD File with YAML Header
 - Standard RevealJS YAML with theme, logo, footer, bibliography
-- Setup chunk for R data loading if needed
+- Setup chunk for Python data loading if needed
 
 ## Phase 3: Slide-by-Slide Translation
 - Delegate to `beamer-translator` agent
@@ -44,8 +44,8 @@ Extract all citations from Beamer, map to bibliography keys.
 ## Phase 4: TikZ Diagram Integration
 Reference extracted SVGs with 0-based indexing.
 
-## Phase 5: R Figure Integration (Plotly-First)
-Interactive plotly from RDS data, static SVG for TikZ/complex figures.
+## Phase 5: Python Figure Integration (Plotly-First)
+Interactive plotly from Parquet/Pickle data, static SVG for TikZ/complex figures.
 
 ## Phase 6: First Render & Content Fidelity Check
 Render, count slides, go through EVERY slide checking for issues.

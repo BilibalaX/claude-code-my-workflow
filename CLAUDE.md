@@ -33,7 +33,9 @@
 ├── Slides/                      # Beamer .tex files
 ├── Quarto/                      # RevealJS .qmd files + theme
 ├── docs/                        # GitHub Pages (auto-generated)
-├── scripts/                     # Utility scripts + R code
+├── data/                        # raw/interim/processed datasets (recommended)
+├── scripts/                     # Utility scripts + Python code
+├── output/                      # tables/figures/models/logs (recommended)
 ├── quality_reports/             # Plans, session logs, merge reports
 ├── explorations/                # Research sandbox (see rules)
 ├── templates/                   # Session log, quality report templates
@@ -58,6 +60,9 @@ TEXINPUTS=../Preambles:$TEXINPUTS xelatex -interaction=nonstopmode file.tex
 python scripts/quality_score.py Quarto/file.qmd
 ```
 
+# Recommended data pipeline locations
+mkdir -p data/{raw,interim,processed} output/{tables,figures,models,logs} scripts/python
+
 ---
 
 ## Quality Thresholds
@@ -80,7 +85,7 @@ python scripts/quality_score.py Quarto/file.qmd
 | `/proofread [file]` | Grammar/typo/overflow review |
 | `/visual-audit [file]` | Slide layout audit |
 | `/pedagogy-review [file]` | Narrative, notation, pacing review |
-| `/review-r [file]` | R code quality review |
+| `/review-python [file]` | Python code quality review |
 | `/qa-quarto [LectureN]` | Adversarial Quarto vs Beamer QA |
 | `/slide-excellence [file]` | Combined multi-agent review |
 | `/translate-to-quarto [file]` | Beamer → Quarto translation |
@@ -92,7 +97,7 @@ python scripts/quality_score.py Quarto/file.qmd
 | `/research-ideation [topic]` | Research questions + strategies |
 | `/interview-me [topic]` | Interactive research interview |
 | `/review-paper [file]` | Manuscript review |
-| `/data-analysis [dataset]` | End-to-end R analysis |
+| `/data-analysis [dataset]` | End-to-end Python analysis |
 | `/learn [skill-name]` | Extract discovery into persistent skill |
 | `/context-status` | Show session health + context usage |
 | `/deep-audit` | Repository-wide consistency audit |

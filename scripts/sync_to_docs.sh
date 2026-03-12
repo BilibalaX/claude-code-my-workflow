@@ -68,10 +68,10 @@ for pdf in "$REPO_ROOT/Slides/"*.pdf; do
     fi
 done
 
-# 4. Sync R scripts to docs/files/code/
-echo "Syncing R scripts..."
+# 4. Sync Python scripts to docs/files/code/
+echo "Syncing Python scripts..."
 mkdir -p "$DOCS_DIR/files/code"
-for rscript in "$REPO_ROOT/scripts/R/"*.R; do
+for rscript in "$REPO_ROOT/scripts/python/"*.py; do
     if [ -f "$rscript" ]; then
         echo "  Copying $(basename "$rscript")..."
         cp "$rscript" "$DOCS_DIR/files/code/"

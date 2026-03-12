@@ -49,8 +49,8 @@ Claude Code runs on your computer with full access to your file system, terminal
 
 | Capability | What It Means for You |
 |-----------|----------------------|
-| Read & edit your files | Surgical edits to `.tex`, `.qmd`, `.R` files in place |
-| Run shell commands | Compile LaTeX, run R scripts, render Quarto --- directly |
+| Read & edit your files | Surgical edits to `.tex`, `.qmd`, `.py` files in place |
+| Run shell commands | Compile LaTeX, run Python scripts, render Quarto --- directly |
 | Access git history | Commits, PRs, branches --- all from the conversation |
 | Persistent memory | CLAUDE.md + MEMORY.md survive across sessions |
 | Orchestrator mode | Claude autonomously plans, implements, reviews, fixes, and verifies |
@@ -60,7 +60,7 @@ Claude Code runs on your computer with full access to your file system, terminal
 ::: {.callout-tip}
 ## Case Study: Econ 730 at Emory
 
-This workflow was developed over 6+ sessions building a PhD course on Causal Panel Data. The result: 6 complete lectures (140+ slides each), with Beamer + Quarto versions, interactive Plotly charts, TikZ diagrams, and R replication scripts --- all managed by the orchestrator and reviewed by 10 specialized agents across 5 quality dimensions.
+This workflow was developed over 6+ sessions building a PhD course on Causal Panel Data. The result: 6 complete lectures (140+ slides each), with Beamer + Quarto versions, interactive Plotly charts, TikZ diagrams, and Python replication scripts --- all managed by the orchestrator and reviewed by 10 specialized agents across 5 quality dimensions.
 
 While this case study centers on slides, every component --- agents, orchestrator, quality gates --- works identically for research papers, data analysis, and proposals.
 :::
@@ -124,8 +124,8 @@ You: "Analyze this dataset and produce publication-ready output"
      ↓
 Claude automatically:
   → Runs /data-analysis (explore, model, tables, figures)
-  → Runs /review-r (code quality, reproducibility)
-  → Produces R script, tables, and figures
+  → Runs /review-python (code quality, reproducibility)
+  → Produces Python script, tables, and figures
   → Scores against quality gates
      ↓
 You see: "Analysis complete. 3 tables, 4 figures. Score: 85/100."
@@ -217,7 +217,7 @@ The guide shows terminal commands because they are the most universal way to exp
 ::: {.callout-tip appearance="simple"}
 ## Starter Prompt
 
-I am starting to work on **[PROJECT NAME]** in this repo. **[Describe your project in 2--3 sentences --- what you're building, who it's for, what tools you use (e.g., LaTeX/Beamer, R, Quarto).]**
+I am starting to work on **[PROJECT NAME]** in this repo. **[Describe your project in 2--3 sentences --- what you're building, who it's for, what tools you use (e.g., LaTeX/Beamer, Python, Quarto).]**
 
 I want our collaboration to be structured, precise, and rigorous --- even if it takes more time. When creating visuals, everything must be polished and publication-ready. I don't want to repeat myself, so our workflow should be smart about remembering decisions and learning from corrections.
 
@@ -248,10 +248,10 @@ If you prefer to configure things yourself instead of letting Claude handle it:
 **Create your knowledge base** --- Open `.claude/rules/knowledge-base-template.md` and fill in:
 
 1. **Notation registry** --- every symbol you use, where it's introduced, and anti-patterns
-2. **Applications database** --- datasets, papers, and R packages you reference
+2. **Applications database** --- datasets, papers, and Python packages you reference
 3. **Design principles** --- what you've approved and what you've overridden
 
-**Configure permissions** --- Review `.claude/settings.json`. The template includes permissions for git, LaTeX, Quarto, R, and utility scripts. Add any additional tools you use.
+**Configure permissions** --- Review `.claude/settings.json`. The template includes permissions for git, LaTeX, Quarto, Python, and utility scripts. Add any additional tools you use.
 
 **Test it:**
 
@@ -337,7 +337,7 @@ Claude will skim everything and catch some issues. But it will miss:
 
 - The equation on slide 42 where a subscript changed from $m_t^{d=0}$ to $m_t^0$
 - The TikZ diagram where two labels overlap at presentation resolution
-- The R script that uses `k=10` covariates but the slide says `k=5`
+- The Python script that uses `k=10` covariates but the slide says `k=5`
 
 Now compare with specialized agents:
 
@@ -346,7 +346,7 @@ Now compare with specialized agents:
 | `proofreader` | Grammar only | "principle" vs "principal" |
 | `slide-auditor` | Layout only | Text overflow on slide 37 |
 | `pedagogy-reviewer` | Flow only | Missing framing sentence before Theorem 3.1 |
-| `r-reviewer` | Code only | Missing `set.seed()` |
+| `python-reviewer` | Code only | Missing `np.random.seed()` |
 | `domain-reviewer` | Substance | Slide says 10,000 MC reps, code runs 1,000 |
 
 Each agent reads the same file but examines a different dimension with full attention. The `/slide-excellence` skill runs them all in parallel.
@@ -427,7 +427,7 @@ The verification protocol (`.claude/rules/verification-protocol.md`) requires th
 ::: {.callout-warning}
 ## Don't Skip Verification
 
-In Econ 730, verification caught unverified TikZ diagrams that would have deployed with overlapping labels, broken SVGs in Quarto slides that wouldn't display, and R scripts with missing intercept terms that produced silently wrong estimates.
+In Econ 730, verification caught unverified TikZ diagrams that would have deployed with overlapping labels, broken SVGs in Quarto slides that wouldn't display, and Python scripts with missing intercept terms that produced silently wrong estimates.
 :::
 
 ## Creating Your Own Domain Reviewer
@@ -443,7 +443,7 @@ Every domain can benefit from these five review lenses:
 | **Assumption Audit** | Are stated assumptions sufficient? | Is overlap required for ATT? | Is the adiabatic approximation valid here? |
 | **Derivation Check** | Does the math check out? | Do decomposition terms sum? | Do the units balance? |
 | **Citation Fidelity** | Do slides match cited papers? | Is the theorem from the right paper? | Is the experimental setup correctly described? |
-| **Code-Theory Alignment** | Does code implement the formula? | R script matches the slide equation? | Simulation parameters match theory? |
+| **Code-Theory Alignment** | Does code implement the formula? | Python script matches the slide equation? | Simulation parameters match theory? |
 | **Logic Chain** | Does the reasoning flow? | Can a PhD student follow backwards? | Are prerequisites established? |
 
 To customize, open `.claude/agents/domain-reviewer.md` and fill in:
@@ -520,12 +520,12 @@ Rules are markdown files in `.claude/rules/` that Claude loads automatically. Th
 
 ```
 .claude/rules/
-├── r-code-conventions.md        # paths: ["**/*.R"] — R standards
-├── quality-gates.md             # paths: ["*.tex", "*.qmd", "*.R"] — scoring
+├── python-code-conventions.md        # paths: ["**/*.py"] — Python standards
+├── quality-gates.md             # paths: ["*.tex", "*.qmd", "*.py"] — scoring
 ├── verification-protocol.md     # paths: ["*.tex", "*.qmd", "docs/"] — verify before done
-├── replication-protocol.md      # paths: ["scripts/**/*.R"] — replicate first
+├── replication-protocol.md      # paths: ["scripts/**/*.py"] — replicate first
 ├── exploration-folder-protocol.md  # paths: ["explorations/**"] — sandbox rules
-├── orchestrator-research.md     # paths: ["scripts/**/*.R", "explorations/**"] — simple loop
+├── orchestrator-research.md     # paths: ["scripts/**/*.py", "explorations/**"] — simple loop
 └── ...14 path-scoped rules total
 ```
 
@@ -535,23 +535,23 @@ The first three always-on rules total ~148 lines of actionable instructions. `me
 
 **Why rules matter:** Without them, Claude will use generic defaults. With them, Claude follows *your* standards consistently across sessions.
 
-### Example: Path-Scoped R Code Conventions Rule
+### Example: Path-Scoped Python Code Conventions Rule
 
 ```yaml
 ---
 paths:
-  - "**/*.R"
-  - "Figures/**/*.R"
-  - "scripts/**/*.R"
+  - "**/*.py"
+  - "Figures/**/*.py"
+  - "scripts/**/*.py"
 ---
 ```
 
 ```markdown
-# R Code Standards
+# Python Code Standards
 
 ## Reproducibility
-- set.seed() called ONCE at top (YYYYMMDD format)
-- All packages loaded at top via library()
+- np.random.seed() called ONCE at top (YYYYMMDD format)
+- All packages loaded at top via import statements
 - All paths relative to repository root
 
 ## Visual Identity
@@ -559,7 +559,7 @@ primary_blue  <- "#012169"
 primary_gold  <- "#f2a900"
 ```
 
-The `paths:` block means this rule only loads when Claude reads or edits an `.R` file. When Claude works on a `.tex` file, this rule doesn't consume any of the instruction budget.
+The `paths:` block means this rule only loads when Claude reads or edits an `.py` file. When Claude works on a `.tex` file, this rule doesn't consume any of the instruction budget.
 
 ## Constitutional Governance (Optional)
 
@@ -578,7 +578,7 @@ The `templates/constitutional-governance.md` template helps you distinguish betw
 - **Article IV: Verification Standard** — What must pass before commit (e.g., compile, tests, render)
 - **Article V: File Organization** — Where different file types live (prevents scattering)
 
-The template includes examples for LaTeX, R, Python, Jupyter, and multi-language workflows.
+The template includes examples for LaTeX, Python, Python, Jupyter, and multi-language workflows.
 
 Use constitutional governance **after** you've established 3-7 recurring patterns that you want to enforce consistently. Don't create it on day one --- let patterns emerge first, then codify them. Skip it for solo projects with evolving standards, or when you prefer case-by-case decisions.
 
@@ -626,7 +626,7 @@ Agents are the real power of this system. Each agent is an expert in one dimensi
 +-- proofreader.md        # Grammar, typos, consistency
 +-- slide-auditor.md      # Visual layout, overflow, spacing
 +-- pedagogy-reviewer.md  # Narrative arc, notation clarity, pacing
-+-- r-reviewer.md         # R code quality and reproducibility
++-- python-reviewer.md         # Python code quality and reproducibility
 +-- tikz-reviewer.md      # TikZ diagram visual quality
 +-- quarto-critic.md      # Adversarial Quarto vs Beamer comparison
 +-- quarto-fixer.md       # Applies critic's fixes
@@ -678,10 +678,10 @@ Not all agents need the same model. Each agent file has a `model:` field in its 
 | Task Type | Recommended Model | Why | Examples |
 |-----------|-------------------|-----|----------|
 | Complex translation | `model: opus` | Needs deep understanding of both formats | beamer-translator, quarto-critic |
-| Fast, constrained work | `model: sonnet` | Speed matters more than depth | r-reviewer, quarto-fixer |
+| Fast, constrained work | `model: sonnet` | Speed matters more than depth | python-reviewer, quarto-fixer |
 | Default | `model: inherit` | Uses whatever the main session runs | proofreader, slide-auditor |
 
-**The principle:** Use Opus for tasks that require holding two large documents in mind simultaneously (translation, adversarial comparison). Use Sonnet for tasks with clear, bounded scope (fix these 12 issues, check this R script). Let everything else inherit.
+**The principle:** Use Opus for tasks that require holding two large documents in mind simultaneously (translation, adversarial comparison). Use Sonnet for tasks with clear, bounded scope (fix these 12 issues, check this Python script). Let everything else inherit.
 
 To change an agent's model, edit its YAML frontmatter:
 
@@ -708,7 +708,7 @@ If you configure model-per-agent, a typical Beamer-to-Quarto translation runs th
     "allow": [
       "Bash(git status *)",
       "Bash(xelatex *)",
-      "Bash(Rscript *)",
+      "Bash(python *)",
       "Bash(quarto render *)",
       "Bash(./scripts/sync_to_docs.sh *)"
     ]
@@ -995,7 +995,7 @@ The orchestrator selects agents based on which files were touched:
 | `.tex` only | proofreader + slide-auditor + pedagogy-reviewer |
 | `.qmd` only | proofreader + slide-auditor + pedagogy-reviewer |
 | `.qmd` with matching `.tex` | Above + quarto-critic (parity check) |
-| `.R` scripts | r-reviewer |
+| `.py` scripts | python-reviewer |
 | TikZ diagrams present | tikz-reviewer |
 | Domain content | domain-reviewer (if configured) |
 | Multiple formats | verifier for cross-format parity |
@@ -1040,7 +1040,7 @@ The `/create-lecture` skill guides you through a structured lecture creation wor
   +-- Phase 1: Gather materials (papers, outlines)
   +-- Phase 2: Design slide structure
   +-- Phase 3: Draft Beamer slides
-  +-- Phase 4: Generate R figures
+  +-- Phase 4: Generate Python figures
   +-- Phase 5: Polish and verify
   |     +-- /slide-excellence (domain + visual + pedagogy)
   |     +-- /proofread (grammar/typos)
@@ -1076,7 +1076,7 @@ When working with papers that have replication packages:
 Phase 1: Inventory original code
   +-- Record "gold standard" numbers (Table X, Column Y = Z.ZZ)
 
-Phase 2: Translate (e.g., Stata -> R)
+Phase 2: Translate (e.g., Stata -> Python)
   +-- Match original specification EXACTLY (same covariates, same clustering)
 
 Phase 3: Verify match
@@ -1091,7 +1091,7 @@ Phase 4: Only then extend
 ::: {.callout-important}
 ## Never Skip Replication
 
-In one course, we discovered that a widely-used R package silently produced **incorrect estimates** due to a subtle specification issue. This bug was caught 3 times in different scripts. Without the replication-first protocol, these wrong numbers would have been taught to PhD students.
+In one course, we discovered that a widely-used Python package silently produced **incorrect estimates** due to a subtle specification issue. This bug was caught 3 times in different scripts. Without the replication-first protocol, these wrong numbers would have been taught to PhD students.
 :::
 
 ## Pattern 6: Multi-Agent Review {#pattern-6-multi-agent-review}
@@ -1270,7 +1270,7 @@ All experimental work goes into `explorations/` first:
 explorations/
 ├── [active-project]/
 │   ├── README.md           # Goal, hypotheses, status
-│   ├── R/                  # Code iterations (_v1, _v2)
+│   ├── python/                  # Code iterations (_v1, _v2)
 │   ├── scripts/            # Test scripts
 │   └── output/             # Results
 └── ARCHIVE/
@@ -1300,7 +1300,7 @@ Create explorations/[project]/ (5 min)
 Code without overhead (60/100 quality)
   ↓
 Decision point (1-2 hours):
-  ├── Graduate → Move to R/, scripts/, tests/ (upgrade to 80/100)
+  ├── Graduate → Move to python/, scripts/, tests/ (upgrade to 80/100)
   ├── Keep exploring → Stay in explorations/
   └── Abandon → Archive with brief explanation
 ```
@@ -1309,7 +1309,7 @@ The **kill switch** is explicit: at any point, you can stop, archive with a one-
 
 #### Simplified Orchestrator for Research
 
-The full orchestrator (Pattern 2) is designed for course materials with multi-agent review loops. For research projects, the **simple variant** strips this down to: implement → verify → score → done. No multi-round reviews, no parallel agent spawning. This lives in its own path-scoped rule (`.claude/rules/orchestrator-research.md`) that loads only when working on R scripts or explorations.
+The full orchestrator (Pattern 2) is designed for course materials with multi-agent review loops. For research projects, the **simple variant** strips this down to: implement → verify → score → done. No multi-round reviews, no parallel agent spawning. This lives in its own path-scoped rule (`.claude/rules/orchestrator-research.md`) that loads only when working on Python scripts or explorations.
 
 #### Merge-Only Quality Reporting
 
@@ -1325,9 +1325,9 @@ Five skills support the research workflow beyond slide development:
 | `/research-ideation [topic]` | Generate research questions, hypotheses, and empirical strategies | Brainstorming phase |
 | `/interview-me [topic]` | Interactive interview to formalize a vague idea into a concrete specification | When you have an intuition but not a plan |
 | `/review-paper [file]` | Full manuscript review with referee objections | Before submission or after a draft |
-| `/data-analysis [data]` | End-to-end R analysis: explore, regress, produce publication-ready output | Empirical analysis phase |
+| `/data-analysis [data]` | End-to-end Python analysis: explore, regress, produce publication-ready output | Empirical analysis phase |
 
-These skills produce structured reports saved to `quality_reports/`. The `/data-analysis` skill also generates R scripts (saved to `scripts/R/`) and runs the r-reviewer agent automatically.
+These skills produce structured reports saved to `quality_reports/`. The `/data-analysis` skill also generates Python scripts (saved to `scripts/python/`) and runs the python-reviewer agent automatically.
 
 #### The Research Lifecycle as a Dependency Graph
 
@@ -1350,7 +1350,7 @@ A research project is not a waterfall --- it is a **dependency graph**. Some pha
 ::: {.callout-note collapse="true"}
 ## For a Production-Grade Paper Pipeline
 
-For a production-grade paper pipeline, a dedicated fork takes these same skills and wraps them in full research infrastructure: 15 adversarial worker-critic agent pairs, simulated blind peer review, weighted aggregate scoring, journal targeting, and R&R response routing. If your primary output is research papers, see [The Ecosystem](#sec-ecosystem) for details.
+For a production-grade paper pipeline, a dedicated fork takes these same skills and wraps them in full research infrastructure: 15 adversarial worker-critic agent pairs, simulated blind peer review, weighted aggregate scoring, journal targeting, and Revise & Resubmit response routing. If your primary output is research papers, see [The Ecosystem](#sec-ecosystem) for details.
 :::
 
 ### Pattern 12: Branch Isolation with Git Worktrees (Advanced) {#pattern-12-branch-isolation}
@@ -1478,7 +1478,7 @@ The [Template README for Social Science Replication Packages](https://social-sci
 **Code:**
 
 - [ ] All software listed with exact version numbers
-- [ ] Setup script installs all dependencies (`0_setup.R`, `requirements.txt`, etc.)
+- [ ] Setup script installs all dependencies (`0_setup.py`, `requirements.txt`, etc.)
 - [ ] Random seeds set deterministically (not timestamps)
 - [ ] Master script runs everything without manual intervention
 - [ ] Each table and figure produced by an identifiable, separate script
@@ -1506,7 +1506,7 @@ project/
 │   ├── raw/                # Source data (untouched)
 │   └── derived/            # Processed/analysis data
 ├── code/
-│   ├── 00_setup.R          # Install dependencies
+│   ├── 00_setup.py          # Install dependencies
 │   ├── 01_dataprep/        # Data cleaning
 │   ├── 02_analysis/        # Main results
 │   └── 03_appendix/        # Appendix results
@@ -1579,7 +1579,7 @@ The `/slide-excellence` skill already invokes the pedagogy-reviewer and slide-au
 ::: {.callout-note collapse="true"}
 ## The Full Framework
 
-For the complete philosophical treatment --- from Aristotle's three modes of persuasion through neuroaesthetics and the Netflix analogy --- see [The Rhetoric of Decks](https://github.com/scunning1975/MixtapeTools/tree/main/presentations). The repository includes a full essay, example Beamer decks with professional color palettes, a `theme_rhetoric()` ggplot2 theme, and a tested deck generation prompt for Claude Code.
+For the complete philosophical treatment --- from Aristotle's three modes of persuasion through neuroaesthetics and the Netflix analogy --- see [The Rhetoric of Decks](https://github.com/scunning1975/MixtapeTools/tree/main/presentations). The repository includes a full essay, example Beamer decks with professional color palettes, a `theme_rhetoric()` matplotlib/seaborn theme, and a tested deck generation prompt for Claude Code.
 :::
 
 ---
@@ -1617,7 +1617,7 @@ clo-author reorients the entire workflow from slides to **research papers**. The
 - **Simulated blind peer review** --- two independent Referee agents plus an Editor making an editorial decision (Accept / Minor / Major / Reject)
 - **Humanizer pass** --- identifies and strips 24 AI writing patterns across four categories (structural tics, lexical tells, rhetorical patterns, formatting tells)
 - **Domain profile system** --- configurable field-specific calibration file read by all agents
-- **Full submission pipeline** --- journal targeting, R&R response routing (classifies referee comments as NEW ANALYSIS / CLARIFICATION / DISAGREE / MINOR), AEA replication compliance, pre-analysis plans, cover letter generation
+- **Full submission pipeline** --- journal targeting, Revise & Resubmit response routing (classifies referee comments as NEW ANALYSIS / CLARIFICATION / DISAGREE / MINOR), AEA replication compliance, pre-analysis plans, cover letter generation
 
 **When to use it:** Your primary output is research papers and you want production-grade infrastructure for the full lifecycle --- from literature review through journal submission and revise-and-resubmit.
 
@@ -1667,7 +1667,7 @@ MixtapeTools provides the philosophical and practical framework for academic pre
 
 - **Referee 2** --- a systematic 5-audit adversarial protocol for reviewing and replicating empirical work
 - **Deck generation prompt** --- a tested, customizable multi-agent prompt for creating Beamer decks (builder → rhetoric reviewer → graphics specialist)
-- **Example decks** with professional color palettes, custom ggplot2 themes (`theme_rhetoric()`), and complete Beamer templates
+- **Example decks** with professional color palettes, custom matplotlib/seaborn themes (`theme_rhetoric()`), and complete Beamer templates
 - **Zero-warning compilation standard** --- even 0.5pt overfull hbox must be fixed
 
 **When to use it:** You want to make your presentations genuinely beautiful and rhetorically effective, or you want a tested deck generation workflow for Claude Code.
@@ -1688,7 +1688,7 @@ The compliance standard for replication packages at 5+ major economics journals 
 
 ## Step 1: Build Your Knowledge Base
 
-The knowledge base (`.claude/rules/knowledge-base-template.md`) is the most domain-specific component. It provides skeleton tables for notation conventions, lecture progression, applications, design principles, anti-patterns, and R code pitfalls. Fill them in as you develop your project --- you don't need everything upfront.
+The knowledge base (`.claude/rules/knowledge-base-template.md`) is the most domain-specific component. It provides skeleton tables for notation conventions, lecture progression, applications, design principles, anti-patterns, and Python code pitfalls. Fill them in as you develop your project --- you don't need everything upfront.
 
 ### Notation Registry
 
@@ -1800,11 +1800,11 @@ description: Helps with citations
 
 **Regression Output Formatter**
 
-Converts R regression outputs to publication-ready LaTeX tables with proper formatting (standard errors in parentheses, significance stars, fixed effects rows).
+Converts Python regression outputs to publication-ready LaTeX tables with proper formatting (standard errors in parentheses, significance stars, fixed effects rows).
 
 **Trigger:** User runs regressions and says "make a table", "format results", "export to LaTeX"
 
-**Tools:** `Read`, `Write`, `Bash` (to run R scripts)
+**Tools:** `Read`, `Write`, `Bash` (to run Python scripts)
 
 #### Experimental Sciences
 
@@ -1890,7 +1890,7 @@ For capabilities beyond file editing and shell commands --- web search during li
 | Proofreader | `.claude/agents/proofreader.md` | Grammar, typos, consistency |
 | Slide Auditor | `.claude/agents/slide-auditor.md` | Visual layout, overflow, spacing |
 | Pedagogy Reviewer | `.claude/agents/pedagogy-reviewer.md` | Narrative arc, notation clarity |
-| R Reviewer | `.claude/agents/r-reviewer.md` | R code quality, reproducibility |
+| Python Reviewer | `.claude/agents/python-reviewer.md` | Python code quality, reproducibility |
 | TikZ Reviewer | `.claude/agents/tikz-reviewer.md` | Diagram visual quality |
 | Beamer Translator | `.claude/agents/beamer-translator.md` | LaTeX to Quarto translation |
 | Quarto Critic | `.claude/agents/quarto-critic.md` | Adversarial Quarto QA |
@@ -1908,7 +1908,7 @@ For capabilities beyond file editing and shell commands --- web search during li
 | `/proofread` | `.claude/skills/proofread/` | Run proofreading agent |
 | `/visual-audit` | `.claude/skills/visual-audit/` | Run layout audit agent |
 | `/pedagogy-review` | `.claude/skills/pedagogy-review/` | Run pedagogy review agent |
-| `/review-r` | `.claude/skills/review-r/` | Run R code review agent |
+| `/review-python` | `.claude/skills/review-python/` | Run Python code review agent |
 | `/qa-quarto` | `.claude/skills/qa-quarto/` | Critic-fixer adversarial loop |
 | `/slide-excellence` | `.claude/skills/slide-excellence/` | Combined multi-agent review |
 | `/translate-to-quarto` | `.claude/skills/translate-to-quarto/` | Beamer to Quarto translation |
@@ -1920,7 +1920,7 @@ For capabilities beyond file editing and shell commands --- web search during li
 | `/research-ideation` | `.claude/skills/research-ideation/` | Research questions and strategies |
 | `/interview-me` | `.claude/skills/interview-me/` | Interactive research interview |
 | `/review-paper` | `.claude/skills/review-paper/` | Manuscript review |
-| `/data-analysis` | `.claude/skills/data-analysis/` | End-to-end R analysis |
+| `/data-analysis` | `.claude/skills/data-analysis/` | End-to-end Python analysis |
 | `/learn` | `.claude/skills/learn/` | Extract discoveries into persistent skills |
 | `/context-status` | `.claude/skills/context-status/` | Show session health and context usage |
 | `/deep-audit` | `.claude/skills/deep-audit/` | Repository-wide consistency audit |
@@ -1942,16 +1942,16 @@ For capabilities beyond file editing and shell commands --- web search during li
 |------|------|------------|
 | Verification Protocol | `verification-protocol.md` | `.tex`, `.qmd`, `docs/` |
 | Single Source of Truth | `single-source-of-truth.md` | `Figures/`, `.tex`, `.qmd` |
-| Quality Gates | `quality-gates.md` | `.tex`, `.qmd`, `*.R` |
-| R Code Conventions | `r-code-conventions.md` | `*.R` |
+| Quality Gates | `quality-gates.md` | `.tex`, `.qmd`, `*.py` |
+| Python Code Conventions | `python-code-conventions.md` | `*.py` |
 | TikZ Quality | `tikz-visual-quality.md` | `.tex` |
 | Beamer-Quarto Sync | `beamer-quarto-sync.md` | `.tex`, `.qmd` |
 | PDF Processing | `pdf-processing.md` | `master_supporting_docs/` |
 | Proofreading Protocol | `proofreading-protocol.md` | `.tex`, `.qmd`, `quality_reports/` |
 | No Pause | `no-pause-beamer.md` | `.tex` |
-| Replication Protocol | `replication-protocol.md` | `*.R` |
-| Knowledge Base | `knowledge-base-template.md` | `.tex`, `.qmd`, `*.R` |
-| Orchestrator Research | `orchestrator-research.md` | `*.R`, `explorations/` |
+| Replication Protocol | `replication-protocol.md` | `*.py` |
+| Knowledge Base | `knowledge-base-template.md` | `.tex`, `.qmd`, `*.py` |
+| Orchestrator Research | `orchestrator-research.md` | `*.py`, `explorations/` |
 | Exploration Folder | `exploration-folder-protocol.md` | `explorations/` |
 | Exploration Fast-Track | `exploration-fast-track.md` | `explorations/` |
 

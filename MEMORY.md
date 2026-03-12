@@ -11,7 +11,7 @@ When a mistake is corrected, append a `[LEARN:category]` entry below.
 
 [LEARN:workflow] Requirements specification phase catches ambiguity before planning → reduces rework 30-50%. Use spec-then-plan for complex/ambiguous tasks (>1 hour or >3 files).
 
-[LEARN:workflow] Spec-then-plan protocol: AskUserQuestion (3-5 questions) → create `quality_reports/specs/YYYY-MM-DD_description.md` with MUST/SHOULD/MAY requirements → declare clarity status (CLEAR/ASSUMED/BLOCKED) → get approval → then draft plan.
+[LEARN:workflow] Spec-then-plan protocol: AskUserQuestion (3-5 questions) → create `quality_reports/specs/YYYY-MM-DD_description.md` with MUST/SHOULD/MAY requirements → declare clarity status (CLEApython/ASSUMED/BLOCKED) → get approval → then draft plan.
 
 [LEARN:workflow] Context survival before compression: (1) Update MEMORY.md with [LEARN] entries, (2) Ensure session log current (last 10 min), (3) Active plan saved to disk, (4) Open questions documented. The pre-compact hook displays checklist.
 
@@ -23,7 +23,7 @@ When a mistake is corrected, append a `[LEARN:category]` entry below.
 
 [LEARN:documentation] Always document new templates in README's "What's Included" section with purpose description. Template inventory must be complete and accurate.
 
-[LEARN:documentation] Guide must be generic (framework-oriented) not prescriptive. Provide templates with examples for multiple workflows (LaTeX, R, Python, Jupyter), let users customize. No "thou shalt" rules.
+[LEARN:documentation] Guide must be generic (framework-oriented) not prescriptive. Provide templates with examples for multiple workflows (LaTeX, Python, Python, Jupyter), let users customize. No "thou shalt" rules.
 
 [LEARN:documentation] Date fields in frontmatter and README must reflect latest significant changes. Users check dates to assess currency.
 
@@ -33,7 +33,7 @@ When a mistake is corrected, append a `[LEARN:category]` entry below.
 
 [LEARN:design] Quality standard for guide additions: useful + pedagogically strong + drives usage + leaves great impression + improves upon starting fresh + no redundancy + not slow. All 7 criteria must hold.
 
-[LEARN:design] Generic means working for any academic workflow: pure LaTeX (no Quarto), pure R (no LaTeX), Python/Jupyter, any domain (not just econometrics). Test recommendations across use cases.
+[LEARN:design] Generic means working for any academic workflow: pure LaTeX (no Quarto), pure Python (no LaTeX), Python/Jupyter, any domain (not just econometrics). Test recommendations across use cases.
 
 ## File Organization
 

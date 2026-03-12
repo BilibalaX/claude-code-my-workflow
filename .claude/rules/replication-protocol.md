@@ -1,7 +1,7 @@
 ---
 paths:
-  - "scripts/**/*.R"
-  - "Figures/**/*.R"
+  - "scripts/**/*.py"
+  - "Figures/**/*.py"
 ---
 
 # Replication-First Protocol
@@ -12,7 +12,7 @@ paths:
 
 ## Phase 1: Inventory & Baseline
 
-Before writing any R code:
+Before writing any Python code:
 
 - [ ] Read the paper's replication README
 - [ ] Inventory replication package: language, data files, scripts, outputs
@@ -26,26 +26,26 @@ Before writing any R code:
 | Main ATT | Table 2, Col 3 | -1.632 | (0.584) | Primary specification |
 ```
 
-- [ ] Store targets in `quality_reports/LectureNN_replication_targets.md` or as RDS
+- [ ] Store targets in `quality_reports/LectureNN_replication_targets.md` or as Parquet/Pickle
 
 ---
 
 ## Phase 2: Translate & Execute
 
-- [ ] Follow `r-code-conventions.md` for all R coding standards
+- [ ] Follow `python-code-conventions.md` for all Python coding standards
 - [ ] Translate line-by-line initially -- don't "improve" during replication
 - [ ] Match original specification exactly (covariates, sample, clustering, SE computation)
-- [ ] Save all intermediate results as RDS
+- [ ] Save all intermediate results as Parquet/Pickle
 
-### Stata to R Translation Pitfalls
+### Stata to Python Translation Pitfalls
 
 <!-- Customize: Add pitfalls specific to your field -->
 
-| Stata | R | Trap |
+| Stata | Python | Trap |
 |-------|---|------|
-| `reg y x, cluster(id)` | `feols(y ~ x, cluster = ~id)` | Stata clusters df-adjust differently from some R packages |
+| `reg y x, cluster(id)` | `feols(y ~ x, cluster = ~id)` | Stata clusters df-adjust differently from some Python packages |
 | `areg y x, absorb(id)` | `feols(y ~ x \| id)` | Check demeaning method matches |
-| `probit` for PS | `glm(family=binomial(link="probit"))` | R default logit != Stata default in some commands |
+| `probit` for PS | `glm(family=binomial(link="probit"))` | Python default logit != Stata default in some commands |
 | `bootstrap, reps(999)` | Depends on method | Match seed, reps, and bootstrap type exactly |
 
 ---
@@ -73,8 +73,8 @@ Save to `quality_reports/LectureNN_replication_report.md`:
 ```markdown
 # Replication Report: [Paper Author (Year)]
 **Date:** [YYYY-MM-DD]
-**Original language:** [Stata/R/etc.]
-**R translation:** [script path]
+**Original language:** [Stata/python/etc.]
+**Python translation:** [script path]
 
 ## Summary
 - **Targets checked / Passed / Failed:** N / M / K
@@ -89,7 +89,7 @@ Save to `quality_reports/LectureNN_replication_report.md`:
 - **Target:** X | **Investigation:** ... | **Resolution:** ...
 
 ## Environment
-- R version, key packages (with versions), data source
+- Python version, key packages (with versions), data source
 ```
 
 ---

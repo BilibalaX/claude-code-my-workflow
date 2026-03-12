@@ -31,7 +31,7 @@ Making this distinction explicit prevents:
 
 **Example (LaTeX workflows):** Beamer `.tex` is authoritative; Quarto `.qmd` derives from it.
 
-**Example (R workflows):** Analysis scripts are authoritative; reports derive from them.
+**Example (Python workflows):** Analysis scripts are authoritative; reports derive from them.
 
 **Example (Jupyter workflows):** Notebooks are authoritative; exported HTML derives from them.
 
@@ -89,9 +89,9 @@ All artifacts must [YOUR STANDARD: e.g., compile successfully, pass tests, rende
 
 **Example (notebook users):** One notebook per analysis; no code duplication across notebooks; shared functions go in modules.
 
-**Example (multi-language):** Language-specific subdirectories (`R/`, `python/`, `julia/`); no mixed-language files.
+**Example (multi-language):** Language-specific subdirectories (`python/`, `python/`, `julia/`); no mixed-language files.
 
-**Example (literate programming):** All code lives in `.qmd` or `.Rmd` files; extracted `.R` scripts are derived artifacts.
+**Example (literate programming):** All code lives in `.qmd` or `.Rmd` files; extracted `.py` scripts are derived artifacts.
 
 **Why this matters:** Consistent structure enables navigation, collaboration, and automated tooling.
 
@@ -146,7 +146,7 @@ Don't create articles for:
 
 ### Economics/Econometrics
 
-1. **Replication-First:** All empirical claims must have accompanying R/Stata scripts
+1. **Replication-First:** All empirical claims must have accompanying python/Stata scripts
 2. **Data Provenance:** All datasets documented with source, date, and processing steps
 3. **Robust Standard Errors:** Default to clustered SEs; justify if not used
 
