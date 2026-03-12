@@ -76,7 +76,7 @@ Browsers cannot render PDF images inline.
 
 **Plotly pattern (for Python-generated plots):**
 - Load Parquet/CSV data in setup chunk
-- Use `plot_ly()` with project colors and layout helper
+- Use `plotly.express` (`px`) or `plotly.graph_objects` (`go`) with project colors and the shared layout helper
 - Add meaningful hover templates
 - **CRITICAL — RevealJS height override:** Every QMD with plotly MUST include height CSS in YAML
 
